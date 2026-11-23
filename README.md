@@ -55,7 +55,7 @@ Other commands: `validate`, `render --out x.png`, `import`, `set-default`, `bind
 `list`, `status`, `delete`. Use `python -m ckl app start|stop|restart` to control the app.
 
 ## Where things are stored
-`%APPDATA%\SteelGlow\`: `profiles\*.json`, `settings.json`,
+`%USERPROFILE%\.steelglow\`: `profiles\*.json`, `settings.json`,
 `calibration_apex9_tkl.json`, `ckl.log`.
 
 ## Tests / tools

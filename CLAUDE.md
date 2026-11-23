@@ -11,7 +11,7 @@ GameSense API of SteelSeries GG. GG must stay running; it keeps keybinds/macros.
   (`.claude/skills/light-profile/`). It interviews the user, previews live on the hardware and loops on
   feedback.
 - Profile source files live in `profile_library/*.json` (committed). The app's live store is
-  `%APPDATA%\SteelGlow\profiles\`; `ckl profile import` copies library files into it.
+  `%USERPROFILE%\.steelglow\profiles\`; `ckl profile import` copies library files into it.
 - Always-current reference for effects/params/key ids/groups: `python -m ckl profile schema`.
 - Authoring CLI (`python -m ckl profile …`): `validate`, `render --out x.png`, `import [--replace]`,
   `preview NAME|--file F`, `end-preview`, `set-default`, `bind EXE NAME`, `list`, `status`, `delete`.

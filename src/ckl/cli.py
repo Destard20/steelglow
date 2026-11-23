@@ -102,9 +102,16 @@ def app_start(editor: bool = False, wait: float = 15.0) -> dict | None:
 
     if ipc.is_running():
         return ipc.send({"cmd": "status"})
-    flags = 0x00000008 | 0x00000200  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
-    subprocess.Popen([_pythonw(), "-m", "ckl"] + (["--editor"] if editor else []),
-                     creationflags=flags, close_fds=True)
+    from .autostart import shortcut_path
+
+    shortcut = shortcut_path()
+    if shortcut.exists():
+        # Open the Startup shortcut through Explorer: the app then runs exactly as it does at
+        # login, outside any app sandbox this CLI may be running in (e.g. Claude's MSIX package).
+        subprocess.Popen(["explorer.exe", str(shortcut)], close_fds=True)
+    else:
+        flags = 0x00000008 | 0x00000200  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+        subprocess.Popen([_pythonw(), "-m", "ckl"], creationflags=flags, close_fds=True)
     deadline = time.monotonic() + wait
     while time.monotonic() < deadline:
         time.sleep(0.4)
@@ -114,6 +121,8 @@ def app_start(editor: bool = False, wait: float = 15.0) -> dict | None:
             while not st.get("connected") and time.monotonic() < deadline:
                 time.sleep(0.4)
                 st = ipc.send({"cmd": "status"}, timeout_ms=800) or st
+            if editor:
+                ipc.send({"cmd": "show"})
             return st
     return None
 
