@@ -52,6 +52,10 @@ ROWS: list[tuple[float, list[tuple]]] = [
 # fmt: on
 
 KEYBOARD_WIDTH = 18.25
+
+# ISO Enter is a "mirrored P": 1.5u wide on the Tab row (x 13.5-15), 1.25u wide on the
+# Caps row, where it starts right after the ù key (Caps 1.75u + 12 keys = 13.75).
+ISO_ENTER_LOWER_X = 13.75
 KEYBOARD_HEIGHT = 6.25
 
 # Aerox 9 Wireless RGB zones, drawn to the right of the keyboard (front -> back).

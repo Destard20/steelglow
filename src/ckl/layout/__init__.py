@@ -32,6 +32,8 @@ class Led:
     h: float
     row: int  # keyboard row 0-5, or -1 for mouse zones
     device: str  # "keyboard" | "mouse"
+    # Two-row keys (ISO Enter): left edge of the narrower lower half. None = plain rectangle.
+    lower_x: float | None = None
 
     @property
     def cx(self) -> float:
@@ -53,8 +55,9 @@ class Layout:
             x = 0.0
             for kid, label, scan, w in keys:
                 if kid is not None:
-                    h = 2.0 if kid == "enter" else 1.0
-                    leds.append(Led(len(leds), kid, label, scan, x, y, w, h, row_idx, "keyboard"))
+                    iso_enter = kid == "enter"
+                    leds.append(Led(len(leds), kid, label, scan, x, y, w, 2.0 if iso_enter else 1.0, row_idx,
+                                    "keyboard", apex9_tkl.ISO_ENTER_LOWER_X if iso_enter else None))
                 x += w
         for mid, label, mx, my in apex9_tkl.MOUSE_LEDS:
             leds.append(Led(len(leds), mid, label, None, mx, my, 1.0, 1.0, -1, "mouse"))

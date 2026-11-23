@@ -59,9 +59,31 @@ class KeyboardView(QWidget):
         s, ox, oy = self._transform()
         return QRectF(ox + (led.x + PAD / 2) * s, oy + (led.y + PAD / 2) * s, (led.w - PAD) * s, (led.h - PAD) * s)
 
+    def _shape(self, led) -> tuple[QPainterPath, QRectF]:
+        """Outline of the key and the box its label is centred in.
+
+        Plain keys are rounded rectangles. ISO Enter (``led.lower_x`` set) is the union of a wide
+        top half and a narrower lower half that starts at ``lower_x``: a mirrored "P".
+        """
+        s, ox, oy = self._transform()
+        radius = s * 0.12
+        r = self._rect(led)
+        path = QPainterPath()
+        if led.lower_x is None:
+            path.addRoundedRect(r, radius, radius)
+            return path, r
+        half = led.h / 2
+        top = QRectF(r.left(), r.top(), r.width(), (half - PAD) * s)
+        lower_left = ox + (led.lower_x + PAD / 2) * s
+        stem = QRectF(lower_left, r.top(), r.right() - lower_left, r.height())
+        top_path, stem_path = QPainterPath(), QPainterPath()
+        top_path.addRoundedRect(top, radius, radius)
+        stem_path.addRoundedRect(stem, radius, radius)
+        return top_path.united(stem_path).simplified(), stem
+
     def led_at(self, pos: QPointF):
         for led in self.layout_.leds:
-            if self._rect(led).contains(pos):
+            if self._shape(led)[0].contains(pos):
                 return led
         return None
 
@@ -90,7 +112,7 @@ class KeyboardView(QWidget):
         font.setPixelSize(max(8, int(s * 0.24)))
         p.setFont(font)
         for led in self.layout_.leds:
-            r = self._rect(led)
+            path, r = self._shape(led)
             c = self.colors[led.index]
             fill = QColor(int(c[0]), int(c[1]), int(c[2]))
             p.setBrush(fill)
@@ -101,7 +123,7 @@ class KeyboardView(QWidget):
                 p.setPen(QPen(QColor("#00e5ff"), max(2.0, s * 0.07)))
             else:
                 p.setPen(QPen(QColor(70, 70, 78), 1))
-            p.drawRoundedRect(r, s * 0.12, s * 0.12)
+            p.drawPath(path)
             lum = 0.299 * c[0] + 0.587 * c[1] + 0.114 * c[2]
             p.setPen(QColor(20, 20, 20) if lum > 140 else QColor(230, 230, 235))
             p.drawText(r, Qt.AlignCenter | Qt.TextWordWrap, led.label)
