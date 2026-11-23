@@ -63,6 +63,20 @@ def test_migrate_repoints_stale_shortcut(env, monkeypatch):
     assert autostart._shortcut_target(autostart.shortcut_path())[0].lower() == real()[0].lower()
 
 
+def test_stale_icon_detection(env, tmp_path):
+    from ckl.paths import data_dir
+
+    good = data_dir() / "steelglow.ico"
+    good.write_bytes(b"ico")
+    assert not autostart._icon_is_stale(str(good))
+    assert not autostart._icon_is_stale("")  # no custom icon
+    elsewhere = tmp_path / "old" / "steelglow.ico"
+    elsewhere.parent.mkdir()
+    elsewhere.write_bytes(b"ico")
+    assert autostart._icon_is_stale(str(elsewhere))
+    assert autostart._icon_is_stale(str(data_dir() / "missing.ico"))
+
+
 def test_migrate_noop_when_nothing_to_do(env):
     autostart.migrate()
     assert not autostart.is_enabled()

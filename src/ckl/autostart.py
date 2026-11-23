@@ -111,13 +111,29 @@ def _write_shortcut(path: Path) -> None:
 
 
 def _shortcut_target(path: Path) -> tuple[str, str] | None:
+    info = _shortcut_info(path)
+    return (info[0], info[1]) if info else None
+
+
+def _shortcut_info(path: Path) -> tuple[str, str, str] | None:
+    """(target, arguments, icon file) of an existing shortcut."""
     try:
         import win32com.client
 
         sc = win32com.client.Dispatch("WScript.Shell").CreateShortcut(str(path))
-        return sc.TargetPath, sc.Arguments
+        return sc.TargetPath, sc.Arguments, sc.IconLocation.rsplit(",", 1)[0]
     except Exception:  # noqa: BLE001
         return None
+
+
+def _icon_is_stale(icon: str) -> bool:
+    """True when the shortcut's icon file isn't in the current settings folder (or is missing)."""
+    if not icon:
+        return False  # no custom icon: nothing to repair
+    from .paths import data_dir
+
+    p = Path(icon)
+    return not p.exists() or p.parent.resolve() != data_dir().resolve()
 
 
 # ---------------------------------------------------------------------- public api
@@ -152,9 +168,10 @@ def migrate() -> None:
         path = shortcut_path()
         stale = False
         if path.exists():
-            current = _shortcut_target(path)
+            current = _shortcut_info(path)
             target, args, _ = launcher()
-            stale = current is not None and (Path(current[0]) != Path(target) or current[1] != args)
+            stale = current is not None and (
+                Path(current[0]) != Path(target) or current[1] != args or _icon_is_stale(current[2]))
         if legacy or stale:
             set_enabled(True)
             log.info("autostart migrated (legacy run entry=%s, stale shortcut=%s)", legacy, stale)
