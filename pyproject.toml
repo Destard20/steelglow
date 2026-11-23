@@ -7,6 +7,7 @@ name = "steelglow"
 version = "0.1.0"
 description = "Layered, reactive, per-app RGB lighting for SteelSeries devices via the GameSense API"
 requires-python = ">=3.11"
+license = { file = "LICENSE" }
 dependencies = [
     "PySide6>=6.6",
     "httpx>=0.27",

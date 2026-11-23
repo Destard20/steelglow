@@ -75,3 +75,6 @@ back to GG.
   LEDs off while the mouse moves, and *Illumination Dim Timer* dims them when idle. To save battery from
   this app instead, set *Mouse brightness* to 0 % on a profile: the mouse then gets almost no lighting
   updates.
+
+## License
+MIT, see [LICENSE](LICENSE).
