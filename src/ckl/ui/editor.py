@@ -56,7 +56,7 @@ class EditorWindow(QMainWindow):
         self.ctrl = ctrl
         self.store = ctrl.store
         self.layout_ = ctrl.layout
-        self.setWindowTitle("Custom Keyboard Lights")
+        self.setWindowTitle("SteelGlow")
         self.resize(1400, 820)
         self.profile: Profile | None = None
         self.layer_idx: int | None = None  # index into profile.layers
@@ -396,7 +396,7 @@ class EditorWindow(QMainWindow):
             "Keep GG running in the background: it still handles your key bindings, macros, actuation "
             "and onboard profiles.</p>"
             "<p>If nothing lights up, open GG → <i>Engine</i> → <i>Apps</i> and make sure "
-            "<b>Custom Keyboard Lights</b> is enabled.</p>"
+            "<b>SteelGlow</b> is enabled.</p>"
             "<p>The key listener used for reactive effects only <i>observes</i> key presses to "
             "light them up. It never blocks or changes input. Turn it off per profile if a game's anti-cheat "
             "objects.</p>"

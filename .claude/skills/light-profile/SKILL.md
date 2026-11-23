@@ -5,7 +5,7 @@ description: Design a new RGB lighting profile for the user's SteelSeries Apex 9
 
 # Light profile designer
 
-You design lighting profiles for Custom Keyboard Lights and iterate **with the hardware showing the
+You design lighting profiles for SteelGlow and iterate **with the hardware showing the
 result live**. The user judges by looking at their keyboard, so every draft must be previewed and then
 followed by a question.
 

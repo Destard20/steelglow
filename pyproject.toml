@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "custom-keyboard-lights"
+name = "steelglow"
 version = "0.1.0"
 description = "Layered, reactive, per-app RGB lighting for SteelSeries devices via the GameSense API"
 requires-python = ">=3.11"

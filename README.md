@@ -1,4 +1,4 @@
-# Custom Keyboard Lights
+# SteelGlow
 
 Layered, reactive, per-app RGB lighting for the **SteelSeries Apex 9 TKL** and **Aerox 9 Wireless**,
 inspired by Cooler Master MasterPlus.
@@ -6,6 +6,9 @@ inspired by Cooler Master MasterPlus.
 Lighting goes through SteelSeries' official local **GameSense** API, so **SteelSeries GG keeps running
 in the background** and still handles key bindings, macros, actuation points and onboard profiles.
 This app only takes over the LEDs. Pause it, or quit it, and GG's own lighting comes back.
+
+> SteelGlow is an independent hobby project. It is not affiliated with or endorsed by SteelSeries.
+> SteelSeries, GG, GameSense, Apex and Aerox are trademarks of their owners.
 
 ## Features
 - **Layer stack** per profile: each layer has an effect, a blend mode (normal, add, multiply,
@@ -32,7 +35,7 @@ python -m venv .venv
 `pythonw -m ckl` starts in the tray only. Double-click the tray icon to open the editor. A second
 launch just brings up the running instance's editor.
 
-First run: if nothing lights up, open **GG → Engine → Apps** and enable *Custom Keyboard Lights*.
+First run: if nothing lights up, open **GG → Engine → Apps** and enable *SteelGlow*.
 Then use **Settings → Calibrate keyboard…** once for exact per-key mapping.
 
 ## Designing profiles with Claude

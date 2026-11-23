@@ -37,7 +37,7 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def run_app(argv: list[str]) -> int:
-    ap = argparse.ArgumentParser(prog="ckl", description="Custom Keyboard Lights (subcommands: profile, app)")
+    ap = argparse.ArgumentParser(prog="ckl", description="SteelGlow (subcommands: profile, app)")
     ap.add_argument("--editor", action="store_true", help="open the editor window on start")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
@@ -48,7 +48,7 @@ def run_app(argv: list[str]) -> int:
     from . import ipc
 
     app = QApplication(sys.argv[:1])
-    app.setApplicationName("Custom Keyboard Lights")
+    app.setApplicationName("SteelGlow")
     app.setQuitOnLastWindowClosed(False)
 
     # Single instance: a second launch just asks the first one to open its editor.

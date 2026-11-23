@@ -119,7 +119,7 @@ class Tray(QSystemTrayIcon):
         try:
             set_autostart(on)
         except OSError as exc:
-            self.showMessage("Custom Keyboard Lights", f"Could not change autostart: {exc}")
+            self.showMessage("SteelGlow", f"Could not change autostart: {exc}")
 
     def _status(self, connected: bool, msg: str) -> None:
         self._connected = connected
@@ -131,7 +131,7 @@ class Tray(QSystemTrayIcon):
         if self.ctrl.preview_profile and not self.ctrl.engine.paused:
             state += " (preview)"
         conn = "" if self._connected else " (waiting for GG)"
-        self.setToolTip(f"Custom Keyboard Lights\nProfile: {state}{conn}")
+        self.setToolTip(f"SteelGlow\nProfile: {state}{conn}")
 
     def _activated(self, reason) -> None:
         if reason in (QSystemTrayIcon.DoubleClick, QSystemTrayIcon.Trigger):

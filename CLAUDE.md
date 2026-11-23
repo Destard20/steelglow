@@ -1,4 +1,4 @@
-# Custom Keyboard Lights
+# SteelGlow
 
 Python (PySide6) tray app that drives SteelSeries Apex 9 TKL + Aerox 9 lighting through the
 GameSense API of SteelSeries GG. GG must stay running; it keeps keybinds/macros. See README.md.

@@ -55,7 +55,7 @@ class GameSenseClient:
     def __init__(
         self,
         game: str = GAME,
-        display_name: str = "Custom Keyboard Lights",
+        display_name: str = "SteelGlow",
         mouse_device_type: str = "rgb-3-zone",
         deinit_ms: int = 1000,
         reconnect_interval: float = 2.0,
