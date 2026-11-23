@@ -1,0 +1,24 @@
+{
+  "name": "Chill Ocean",
+  "description": "Calm cyan shallows with a slow deep-blue swell rolling along the bottom rows; keys glow aqua when pressed.",
+  "category": "vibe",
+  "tags": ["chill", "ocean", "calm", "everyday"],
+  "keyboard_brightness": 0.85,
+  "mouse_brightness": 0.4,
+  "reactive": true,
+  "layers": [
+    {"name": "Cyan shallows", "effect": "solid", "params": {"color": "#00c8d8"}, "keys": ["@keyboard"]},
+    {"name": "Clouds", "effect": "clouds", "keys": ["@keyboard"], "opacity": 1.0,
+     "params": {"color": "#ffffff", "shade": "#d8f4ff", "density": 2.0, "count": 3, "size": 2.7, "speed": 0.4,
+                "top": 0.05, "bottom": 0.4}},
+    {"name": "Deep-blue swell", "effect": "sea_swell", "keys": ["@keyboard"],
+     "params": {"colors": ["#0030ff", "#000a80"], "foam": "#a0f0ff", "foam_strength": 0.45,
+                "level": 0.38, "amplitude": 0.2, "wavelength": 0.8, "speed": 0.15, "chop": 0.35}},
+    {"name": "Mouse (static)", "effect": "paint", "keys": ["@mouse"],
+     "params": {"keys": {"mouse1": "#00c8d8", "mouse2": "#0070e0", "mouse3": "#0018c0"}}},
+    {"name": "Key glow", "effect": "key_fade", "blend": "screen", "opacity": 0.85, "keys": ["@keyboard"],
+     "params": {"color": "#c0ffff", "duration": 0.6, "hold": true}},
+    {"name": "Caps / Scroll lock", "effect": "lock_keys", "keys": ["@keyboard"],
+     "params": {"caps_color": "#ff8000"}}
+  ]
+}

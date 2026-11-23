@@ -121,3 +121,22 @@ def test_cpu_bar_fills_function_row(layout):
     _, a = eff.render(ctx(layout, cpu=0.5))
     f = [a[layout.by_id[f"f{i}"].index] for i in range(1, 13)]
     assert f[:6] == [1.0] * 6 and f[6:] == [0.0] * 6
+
+
+def test_sea_swell_fills_bottom_and_moves(layout):
+    eff = Layer(LayerConfig("sea_swell", {"level": 0.3, "amplitude": 0.1}), layout).effect
+    space, esc = layout.by_id["space"].index, layout.by_id["esc"].index
+    _, a = eff.render(ctx(layout, t=0.0))
+    assert a[space] > 0.9  # bottom row is under water
+    assert a[esc] == 0  # top row stays transparent so the base shows
+    _, a2 = eff.render(ctx(layout, t=1.5))
+    assert not np.allclose(a, a2)  # the surface rolls over time
+
+
+def test_clouds_drift_and_stay_in_band(layout):
+    eff = Layer(LayerConfig("clouds", {"top": 0.0, "bottom": 0.3, "speed": 2.0}), layout).effect
+    space = layout.by_id["space"].index
+    _, a = eff.render(ctx(layout, t=0.0))
+    _, a2 = eff.render(ctx(layout, t=1.0))
+    assert a.max() > 0.5 and a[space] == 0  # clouds are drawn, but not on the bottom row
+    assert not np.allclose(a, a2)  # they drift
