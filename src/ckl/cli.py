@@ -149,7 +149,9 @@ def ensure_app() -> dict:
         app_stop()
     st = app_start()
     if st is None:
-        raise SystemExit("error: could not start the app (see %APPDATA%\\CustomKeyboardLights\\ckl.log)")
+        from .paths import data_dir
+
+        raise SystemExit(f"error: could not start the app (see {data_dir() / 'ckl.log'})")
     return st
 
 

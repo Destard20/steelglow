@@ -14,7 +14,8 @@ from PySide6.QtNetwork import QLocalServer, QLocalSocket
 
 log = logging.getLogger(__name__)
 
-SERVER_NAME = "CustomKeyboardLights-instance"
+SERVER_NAME = "SteelGlow-instance"
+LEGACY_SERVER_NAMES = ("CustomKeyboardLights-instance",)  # pre-rename versions
 
 
 class IpcServer(QObject):
@@ -78,12 +79,14 @@ def send(cmd: dict, timeout_ms: int = 3000) -> dict | None:
 
 
 def is_running() -> bool:
-    """True if something is listening on the app's socket (even an older, non-replying version)."""
+    """True if an app instance is listening, including older versions that use a legacy socket
+    name or don't answer commands (callers then treat it as outdated and restart it)."""
     if QCoreApplication.instance() is None:
         QCoreApplication([])
-    sock = QLocalSocket()
-    sock.connectToServer(SERVER_NAME)
-    ok = sock.waitForConnected(500)
-    if ok:
-        sock.disconnectFromServer()
-    return ok
+    for name in (SERVER_NAME, *LEGACY_SERVER_NAMES):
+        sock = QLocalSocket()
+        sock.connectToServer(name)
+        if sock.waitForConnected(300):
+            sock.disconnectFromServer()
+            return True
+    return False

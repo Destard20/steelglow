@@ -25,6 +25,10 @@ def _setup_logging(verbose: bool) -> None:
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s", handlers=handlers)
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
+    from . import paths
+
+    if paths.migration_note:
+        logging.getLogger("ckl.paths").info(paths.migration_note)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -58,11 +62,12 @@ def run_app(argv: list[str]) -> int:
                 "another (older) instance is running and did not answer; use `python -m ckl app restart`")
         return 0
 
-    from .ui.controller import Controller
+    from .ui.controller import Controller, migrate_autostart
     from .ui.editor import EditorWindow
     from .ui.tray import Tray, make_icon
 
     app.setWindowIcon(make_icon())
+    migrate_autostart()
     ctrl = Controller()
     ctrl.start()
     editor: dict[str, EditorWindow | None] = {"w": None}

@@ -18,7 +18,8 @@ import httpx
 
 log = logging.getLogger(__name__)
 
-GAME = "CUSTOM_KB_LIGHTS"
+GAME = "STEELGLOW"
+LEGACY_GAMES = ("CUSTOM_KB_LIGHTS",)  # pre-rename ids; unregistered from GG once per run
 KB_EVENT = "KB_FRAME"
 MOUSE_EVENT = "MOUSE_FRAME"
 GRID_ROWS, GRID_COLS = 6, 22
@@ -71,6 +72,7 @@ class GameSenseClient:
         self._multi = False
         self._last_attempt = 0.0
         self._counter = 0
+        self._legacy_removed = False
         self.last_error: str | None = None
 
     # ------------------------------------------------------------------ connection
@@ -87,7 +89,7 @@ class GameSenseClient:
                 self._post(base, "game_metadata", {
                     "game": self.game,
                     "game_display_name": self.display_name,
-                    "developer": "CustomKeyboardLights",
+                    "developer": "SteelGlow",
                     "deinitialize_timer_length_ms": self.deinit_ms,
                 })
                 self._post(base, "bind_game_event", {
@@ -122,6 +124,21 @@ class GameSenseClient:
             self._base = base
             self.last_error = None
             log.info("GameSense connected at %s (multiple_game_events=%s)", base, self._multi)
+            self._remove_legacy_games(base)
+
+    def _remove_legacy_games(self, base: str) -> None:
+        """Drop pre-rename registrations so GG's Engine > Apps list shows only one entry."""
+        if self._legacy_removed:
+            return
+        self._legacy_removed = True
+        for old in LEGACY_GAMES:
+            if old == self.game:
+                continue
+            try:
+                self._post(base, "remove_game", {"game": old})
+                log.info("removed legacy GameSense registration %s", old)
+            except httpx.HTTPError:
+                pass  # never registered (400) or GG busy: nothing to clean up
 
     def ensure_connected(self) -> bool:
         """Try to (re)connect, rate-limited. Returns True when connected."""
