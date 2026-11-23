@@ -1,0 +1,20 @@
+{
+  "name": "Gaming",
+  "description": "Dim violet base, red movement keys, amber action keys, cyan key-press fade, breathing mouse.",
+  "category": "game",
+  "tags": ["generic", "fps"],
+  "keyboard_brightness": 1.0,
+  "mouse_brightness": 1.0,
+  "reactive": true,
+  "layers": [
+    {"name": "Dim base", "effect": "solid", "params": {"color": "#100020"}},
+    {"name": "Mouse breathing", "effect": "breathing", "params": {"colors": ["#4000ff"], "period": 5.0, "fade_layer": true},
+     "keys": ["@mouse"]},
+    {"name": "Game keys", "effect": "paint", "params": {"keys": {
+      "@wasd": "#ff1030",
+      "lshift": "#ffb000", "space": "#ffb000", "lctrl": "#ffb000",
+      "e": "#ffb000", "r": "#ffb000", "q": "#ffb000", "f": "#ffb000"}}},
+    {"name": "Key fade", "effect": "key_fade", "params": {"color": "#00e0ff", "duration": 0.4}},
+    {"name": "Caps / Scroll lock", "effect": "lock_keys", "params": {}}
+  ]
+}

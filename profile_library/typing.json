@@ -1,0 +1,16 @@
+{
+  "name": "Typing",
+  "description": "Warm sunset gradient, white heatmap of the keys you use, CPU bar on the F-row.",
+  "category": "task",
+  "tags": ["writing", "coding", "warm"],
+  "keyboard_brightness": 1.0,
+  "mouse_brightness": 1.0,
+  "reactive": true,
+  "layers": [
+    {"name": "Sunset", "effect": "gradient", "params": {"colors": ["#ff6a00", "#ee0979"], "direction": "right"}},
+    {"name": "Typing heatmap", "effect": "heatmap", "params": {"cold": "#000000", "hot": "#ffffff", "half_life": 30.0},
+     "blend": "add", "opacity": 0.8},
+    {"name": "CPU on F-row", "effect": "cpu_load", "params": {}},
+    {"name": "Caps lock", "effect": "lock_keys", "params": {"caps_keys": "all letters"}}
+  ]
+}

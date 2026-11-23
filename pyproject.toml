@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "custom-keyboard-lights"
+version = "0.1.0"
+description = "Layered, reactive, per-app RGB lighting for SteelSeries devices via the GameSense API"
+requires-python = ">=3.11"
+dependencies = [
+    "PySide6>=6.6",
+    "httpx>=0.27",
+    "numpy>=1.26",
+    "pynput>=1.7",
+    "psutil>=5.9",
+    "pywin32>=306; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+ckl = "ckl.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ckl = ["layout/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

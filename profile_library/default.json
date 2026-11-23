@@ -1,0 +1,14 @@
+{
+  "name": "Default",
+  "description": "Slow rainbow wave with white typing ripples and lock-key indicators.",
+  "category": "vibe",
+  "tags": ["rainbow", "classic"],
+  "keyboard_brightness": 1.0,
+  "mouse_brightness": 1.0,
+  "reactive": true,
+  "layers": [
+    {"name": "Rainbow wave", "effect": "wave", "params": {"rainbow": true, "speed": 0.25, "wavelength": 1.2}},
+    {"name": "Ripples", "effect": "ripple", "params": {"color": "#ffffff"}, "blend": "screen"},
+    {"name": "Caps / Scroll lock", "effect": "lock_keys", "params": {}}
+  ]
+}
