@@ -20,6 +20,8 @@ This app only takes over the LEDs. Pause it, or quit it, and GG's own lighting c
   - Indicators: Caps/Scroll/Num Lock, CPU-load bar
 - **Per-app profiles**: switch profile automatically when a given `.exe` has focus.
 - **Tray app** with profile switcher, pause, start-with-Windows and a live preview editor.
+  *Start with Windows* puts a **SteelGlow** shortcut in your Startup folder, so it shows up by name
+  in Task Manager → Startup apps and Settings → Apps → Startup, where you can also turn it off.
 - **Calibration wizard** that learns exactly which key each GameSense grid cell lights.
 
 ## Setup

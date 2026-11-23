@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import logging
-import sys
-from pathlib import Path
 
 from PySide6.QtCore import QObject, QTimer, Signal
 
+from ..autostart import is_enabled as autostart_enabled  # noqa: F401 - re-exported for tray/editor
+from ..autostart import migrate as migrate_autostart  # noqa: F401
+from ..autostart import set_enabled as set_autostart  # noqa: F401
 from ..engine.effects import EFFECTS
 from ..engine.loop import Engine
 from ..gamesense import GameSenseClient
@@ -15,10 +16,6 @@ from ..profiles import ProfileStore
 from ..profiles.app_rules import foreground_exe, is_own_process
 
 log = logging.getLogger(__name__)
-
-RUN_KEY = r"Software\Microsoft\Windows\CurrentVersion\Run"
-RUN_NAME = "SteelGlow"
-LEGACY_RUN_NAMES = ("CustomKeyboardLights",)  # pre-rename Run-key value names
 
 
 class Controller(QObject):
@@ -218,49 +215,3 @@ class Controller(QObject):
         self.store.save_settings()
         self.client.mouse_device_type = dtype
         self.client.stop()  # re-registers handlers on next frame
-
-
-# ---------------------------------------------------------------------- autostart
-def _launch_command() -> str:
-    exe = Path(sys.executable)
-    pyw = exe.with_name("pythonw.exe")
-    return f'"{pyw if pyw.exists() else exe}" -m ckl'
-
-
-def _run_value_exists(name: str) -> bool:
-    try:
-        import winreg
-
-        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, RUN_KEY) as k:
-            winreg.QueryValueEx(k, name)
-            return True
-    except OSError:
-        return False
-
-
-def autostart_enabled() -> bool:
-    return any(_run_value_exists(n) for n in (RUN_NAME, *LEGACY_RUN_NAMES))
-
-
-def set_autostart(enabled: bool) -> None:
-    """Write (or remove) the HKCU Run entry. Always clears pre-rename entries."""
-    import winreg
-
-    with winreg.OpenKey(winreg.HKEY_CURRENT_USER, RUN_KEY, 0, winreg.KEY_SET_VALUE) as k:
-        if enabled:
-            winreg.SetValueEx(k, RUN_NAME, 0, winreg.REG_SZ, _launch_command())
-        for name in ((*LEGACY_RUN_NAMES,) if enabled else (RUN_NAME, *LEGACY_RUN_NAMES)):
-            try:
-                winreg.DeleteValue(k, name)
-            except FileNotFoundError:
-                pass
-
-
-def migrate_autostart() -> None:
-    """Rename a pre-rename Run entry to the current name (keeps the user's choice)."""
-    try:
-        if any(_run_value_exists(n) for n in LEGACY_RUN_NAMES):
-            set_autostart(True)
-            log.info("migrated start-with-Windows entry to %r", RUN_NAME)
-    except OSError as exc:
-        log.warning("could not migrate autostart entry: %s", exc)
